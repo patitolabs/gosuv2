@@ -21,6 +21,7 @@ type SuvClient struct {
 // SuvConfig holds the configuration for SuvClient.
 type SuvConfig struct {
 	Host       string
+	Path       string
 	PhpSession string
 	UserCode   string
 	Password   string
@@ -37,7 +38,7 @@ func NewSuvClient(cfg SuvConfig) *SuvClient {
 		SuvURL: url.URL{
 			Scheme: "http",
 			Host:   cfg.Host,
-			Path:   "/portal",
+			Path:   cfg.Path,
 		},
 		HttpClient: http.Client{
 			Jar: http.CookieJar(&SuvCookieJar{}),
