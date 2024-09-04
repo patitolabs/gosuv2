@@ -7,6 +7,11 @@ import (
 	"net/url"
 )
 
+const (
+	STUDENT_SEARCH_CONTROLLER_PATH   = "/controller/buscarAlumnoController.php"
+	PROFESSOR_SEARCH_CONTROLLER_PATH = "/controller/buscarDocenteController.php"
+)
+
 // SearchBasicResponse is the common interface for search responses.
 type SearchBasicResponse interface{}
 
@@ -33,7 +38,7 @@ func (c *SuvClient) SearchStudentByName(name, lastname string) (*[]StudentBasicR
 		"apellido": {lastname},
 	}
 
-	return c.searchGeneric(data, "/controller/buscarAlumnoController.php", c.parseSearchStudentResponse).(*[]StudentBasicResponse), nil
+	return c.searchGeneric(data, STUDENT_SEARCH_CONTROLLER_PATH, c.parseSearchStudentResponse).(*[]StudentBasicResponse), nil
 }
 
 // SearchStudentByCode searches for a student by code.
@@ -43,7 +48,7 @@ func (c *SuvClient) SearchStudentByCode(code string) (*[]StudentBasicResponse, e
 		"codigo": {code},
 	}
 
-	return c.searchGeneric(data, "/controller/buscarAlumnoController.php", c.parseSearchStudentResponse).(*[]StudentBasicResponse), nil
+	return c.searchGeneric(data, STUDENT_SEARCH_CONTROLLER_PATH, c.parseSearchStudentResponse).(*[]StudentBasicResponse), nil
 }
 
 // SearchStudentByDni searches for a student by DNI.
@@ -53,7 +58,7 @@ func (c *SuvClient) SearchStudentByDni(dni string) (*[]StudentBasicResponse, err
 		"dni":  {dni},
 	}
 
-	return c.searchGeneric(data, "/controller/buscarAlumnoController.php", c.parseSearchStudentResponse).(*[]StudentBasicResponse), nil
+	return c.searchGeneric(data, STUDENT_SEARCH_CONTROLLER_PATH, c.parseSearchStudentResponse).(*[]StudentBasicResponse), nil
 }
 
 // SearchStudent searches for a student by code, name and lastname, or DNI.
@@ -78,7 +83,7 @@ func (c *SuvClient) SearchProfessor(name, lastname string) (*[]ProfessorBasicRes
 		"apellido": {lastname},
 	}
 
-	return c.searchGeneric(data, "/controller/buscarDocenteController.php", c.parseSearchProfessorResponse).(*[]ProfessorBasicResponse), nil
+	return c.searchGeneric(data, PROFESSOR_SEARCH_CONTROLLER_PATH, c.parseSearchProfessorResponse).(*[]ProfessorBasicResponse), nil
 }
 
 // searchGeneric performs a generic search using the provided data and endpoint.
