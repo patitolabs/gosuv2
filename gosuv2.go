@@ -36,7 +36,7 @@ type SuvCookieJar struct {
 func NewSuvClient(cfg SuvConfig) *SuvClient {
 	client := &SuvClient{
 		SuvURL: url.URL{
-			Scheme: "http",
+			Scheme: "https",
 			Host:   cfg.Host,
 			Path:   cfg.Path,
 		},
