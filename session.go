@@ -83,28 +83,28 @@ func (c *SuvClient) LoadPhpSession() error {
 
 // handleLoginResponse processes the login response.
 func (c *SuvClient) handleLoginResponse(res *http.Response) (*string, error) {
-	var validarPhpResponse []string
+    var validarPhpResponse []string
 
-	err := json.NewDecoder(res.Body).Decode(&validarPhpResponse)
-	if err != nil {
-		return nil, err
-	}
+    err := json.NewDecoder(res.Body).Decode(&validarPhpResponse)
+    if err != nil {
+        return nil, err
+    }
 
-	if len(validarPhpResponse) == 0 {
-		return nil, errors.New("login failed")
-	}
+    if len(validarPhpResponse) != 4 {
+        return nil, errors.New("login failed: unexpected response format")
+    }
 
-	if validarPhpResponse[0] == "0" {
-		return nil, errors.New("login failed, check your credentials")
-	}
+    if validarPhpResponse[0] == "0" && validarPhpResponse[1] == "0" && validarPhpResponse[2] == "0" && validarPhpResponse[3] == "0" {
+        return nil, errors.New("login failed, check your credentials")
+    }
 
-	c.setCookiesFromResponse(res)
+    c.setCookiesFromResponse(res)
 
-	for _, cookie := range c.HttpClient.Jar.Cookies(&c.SuvURL) {
-		if cookie.Name == "PHPSESSID" {
-			c.Config.PhpSession = cookie.Value
-		}
-	}
+    for _, cookie := range c.HttpClient.Jar.Cookies(&c.SuvURL) {
+        if cookie.Name == "PHPSESSID" {
+            c.Config.PhpSession = cookie.Value
+        }
+    }
 
-	return &c.Config.PhpSession, nil
+    return &c.Config.PhpSession, nil
 }
