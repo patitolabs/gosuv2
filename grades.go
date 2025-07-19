@@ -10,6 +10,16 @@ import (
 	"strings"
 )
 
+const (
+	// Task to retrieve the current semester grades.
+	TaskGetCurrentSemesterGrades string = "verNotasPeriodoActual"
+
+	// Passed status.
+	PassedStatus int = 1
+	// Not passed status.
+	NotPassedStatus int = 0
+)
+
 // SuvGradesResponse represents the response structure for grades
 type SuvGradesResponse struct {
 	PaymentStatus  string
@@ -33,7 +43,7 @@ type SuvCurrentCourseGrades struct {
 	Promedio      float32   `json:"promedio,string"`
 	Aplazado      float32   `json:"aplazado,string"`
 	PromedioFinal float32   `json:"pfinal,string"`
-	Inhabilitado  int       `json:"inh,string"`
+	Inhabilitado  bool      `json:"inh,string"`
 	Pesos         []float32 `json:"pesos"`
 	Estados       []int     `json:"estados"`
 	EstadoFinal   int       `json:"estado_final,string"`
@@ -42,7 +52,7 @@ type SuvCurrentCourseGrades struct {
 // GetSuvGradesResponse retrieves the current semester and its grades from SUV2.
 func (c *SuvClient) GetSuvGradesResponse() (*SuvGradesResponse, error) {
 	data := url.Values{
-		"task": {"verNotasPeriodoActual"},
+		"task": {TaskGetCurrentSemesterGrades},
 	}
 
 	res, err := c.urlEncodedPostRequest(data, "/controller/alumnoController.php")
@@ -175,8 +185,10 @@ func unmarshalSuvGradesResponse(data []byte) (*SuvGradesResponse, error) {
 			course.PromedioFinal = float32(val)
 		}
 		if inh, ok := rawCourse["inh"].(string); ok {
-			course.Inhabilitado, _ = strconv.Atoi(inh)
+			inhVal, _ := strconv.Atoi(inh)
+			course.Inhabilitado = inhVal == 1
 		}
+
 		if ef, ok := rawCourse["estado_final"].(string); ok {
 			course.EstadoFinal, _ = strconv.Atoi(ef)
 		}
