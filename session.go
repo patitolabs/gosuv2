@@ -9,6 +9,13 @@ import (
 	"strings"
 )
 
+const (
+	// Path for the login controller.
+	loginControllerPath string = "/validar.php"
+	// Path for the logout controller.
+	logoutControllerPath string = "/desconectar.php"
+)
+
 // Login attempts to log in to the SUV system with the provided user code and password.
 func (c *SuvClient) Login(usercode, password string) (*string, error) {
 	data := url.Values{
@@ -19,7 +26,7 @@ func (c *SuvClient) Login(usercode, password string) (*string, error) {
 	c.Config.UserCode = usercode
 	c.Config.Password = password
 
-	res, err := c.urlEncodedPostRequest(data, "/validar.php")
+	res, err := c.urlEncodedPostRequest(data, loginControllerPath)
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +41,7 @@ func (c *SuvClient) Login(usercode, password string) (*string, error) {
 
 // Logout logs out from the SUV system.
 func (c *SuvClient) Logout() error {
-	req, err := c.getRequest("/desconectar.php")
+	req, err := c.getRequest(logoutControllerPath)
 	if err != nil {
 		return err
 	}

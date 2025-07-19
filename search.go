@@ -8,8 +8,10 @@ import (
 )
 
 const (
-	studentSearchControllerPath   = "/controller/buscarAlumnoController.php"
-	professorSearchControllerPath = "/controller/buscarDocenteController.php"
+	// Path for the student search controller.
+	studentSearchControllerPath string = "/controller/buscarAlumnoController.php"
+	// Path for the professor search controller.
+	professorSearchControllerPath string = "/controller/buscarDocenteController.php"
 )
 
 // SearchBasicResponse is the common interface for search responses.
