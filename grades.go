@@ -11,6 +11,9 @@ import (
 )
 
 const (
+	// Student controller path.
+	studentControllerPath string = "/controller/alumnoController.php"
+
 	// Task to retrieve the current semester grades.
 	taskGetCurrentSemesterGrades string = "verNotasPeriodoActual"
 
@@ -55,7 +58,7 @@ func (c *SuvClient) GetSuvGradesResponse() (*SuvGradesResponse, error) {
 		"task": {taskGetCurrentSemesterGrades},
 	}
 
-	res, err := c.urlEncodedPostRequest(data, "/controller/alumnoController.php")
+	res, err := c.urlEncodedPostRequest(data, studentControllerPath)
 	if err != nil {
 		return nil, err
 	}
