@@ -12,7 +12,7 @@ import (
 
 const (
 	// Task to retrieve the current semester grades.
-	TaskGetCurrentSemesterGrades string = "verNotasPeriodoActual"
+	taskGetCurrentSemesterGrades string = "verNotasPeriodoActual"
 
 	// Passed status.
 	PassedStatus int = 1
@@ -52,7 +52,7 @@ type SuvCurrentCourseGrades struct {
 // GetSuvGradesResponse retrieves the current semester and its grades from SUV2.
 func (c *SuvClient) GetSuvGradesResponse() (*SuvGradesResponse, error) {
 	data := url.Values{
-		"task": {TaskGetCurrentSemesterGrades},
+		"task": {taskGetCurrentSemesterGrades},
 	}
 
 	res, err := c.urlEncodedPostRequest(data, "/controller/alumnoController.php")
