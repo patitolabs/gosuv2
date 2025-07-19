@@ -12,6 +12,15 @@ const (
 	studentSearchControllerPath string = "/controller/buscarAlumnoController.php"
 	// Path for the professor search controller.
 	professorSearchControllerPath string = "/controller/buscarDocenteController.php"
+
+	// Task to search for a student by name and lastname.
+	taskSearchStudentByName string = "buscarAlumno"
+	// Task to search for a student by code.
+	taskSearchStudentByCode string = "buscarCodigo"
+	// Task to search for a student by DNI.
+	taskSearchStudentByDni string = "buscarDNI"
+	// Task to search for a professor by name and lastname.
+	taskSearchProfessorByName string = "buscarDocente"
 )
 
 // SearchBasicResponse is the common interface for search responses.
@@ -35,7 +44,7 @@ type ProfessorBasicResponse struct {
 // SearchStudentByName searches for a student by name and lastname.
 func (c *SuvClient) SearchStudentByName(name, lastname string) (*[]StudentBasicResponse, error) {
 	data := url.Values{
-		"task":     {"buscarAlumno"},
+		"task":     {taskSearchStudentByName},
 		"nombre":   {name},
 		"apellido": {lastname},
 	}
@@ -46,7 +55,7 @@ func (c *SuvClient) SearchStudentByName(name, lastname string) (*[]StudentBasicR
 // SearchStudentByCode searches for a student by code.
 func (c *SuvClient) SearchStudentByCode(code string) (*[]StudentBasicResponse, error) {
 	data := url.Values{
-		"task":   {"buscarCodigo"},
+		"task":   {taskSearchStudentByCode},
 		"codigo": {code},
 	}
 
@@ -56,7 +65,7 @@ func (c *SuvClient) SearchStudentByCode(code string) (*[]StudentBasicResponse, e
 // SearchStudentByDni searches for a student by DNI.
 func (c *SuvClient) SearchStudentByDni(dni string) (*[]StudentBasicResponse, error) {
 	data := url.Values{
-		"task": {"buscarDNI"},
+		"task": {taskSearchStudentByDni},
 		"dni":  {dni},
 	}
 
@@ -80,7 +89,7 @@ func (c *SuvClient) SearchStudent(code, name, lastname, dni string) (*[]StudentB
 // SearchProfessor searches for a professor by name and lastname.
 func (c *SuvClient) SearchProfessor(name, lastname string) (*[]ProfessorBasicResponse, error) {
 	data := url.Values{
-		"task":     {"buscarDocente"},
+		"task":     {taskSearchProfessorByName},
 		"nombre":   {name},
 		"apellido": {lastname},
 	}
