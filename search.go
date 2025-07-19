@@ -19,17 +19,17 @@ type SearchBasicResponse interface{}
 
 // StudentBasicResponse represents the basic response structure for a student.
 type StudentBasicResponse struct {
-	IdAlumno string `json:"idalumno"`
-	Alumno   string `json:"alumno"`
-	Dni      string `json:"dni"`
+	StudentID   string `json:"idalumno"`
+	StudentName string `json:"alumno"`
+	DNI         string `json:"dni"`
 }
 
 // ProfessorBasicResponse represents the basic response structure for a professor.
 type ProfessorBasicResponse struct {
-	Codigo       string `json:"codigo"`
-	Docente      string `json:"docente"`
-	Dni          string `json:"dni"`
-	IdTrabajador string `json:"idtrabajador"`
+	Code          string `json:"codigo"`
+	ProfessorName string `json:"docente"`
+	DNI           string `json:"dni"`
+	WorkerID      string `json:"idtrabajador"`
 }
 
 // SearchStudentByName searches for a student by name and lastname.

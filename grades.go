@@ -30,23 +30,23 @@ type SuvGradesResponse struct {
 
 // SuvCurrentCourseGrades represents the structure of each course's grades for the current semester.
 type SuvCurrentCourseGrades struct {
-	IdCurso       int       `json:"idcurso,string"`
-	Curso         string    `json:"curso"`
-	Vez           int       `json:"vez,string"`
-	Promedio1     float32   `json:"promedio1,string"`
-	Promedio2     float32   `json:"promedio2,string"`
-	Promedio3     float32   `json:"promedio3,string"`
-	Promedio4     float32   `json:"promedio4,string"`
-	Promedio5     float32   `json:"promedio5,string"`
-	Promedio6     float32   `json:"promedio6,string"`
-	Sustitutorio  float32   `json:"sustitutorio,string"`
-	Promedio      float32   `json:"promedio,string"`
-	Aplazado      float32   `json:"aplazado,string"`
-	PromedioFinal float32   `json:"pfinal,string"`
-	Inhabilitado  bool      `json:"inh,string"`
-	Pesos         []float32 `json:"pesos"`
-	Estados       []int     `json:"estados"`
-	EstadoFinal   int       `json:"estado_final,string"`
+	CourseID     int       `json:"idcurso,string"`
+	CourseName   string    `json:"curso"`
+	Attempt      int       `json:"vez,string"`
+	Average1     float32   `json:"promedio1,string"`
+	Average2     float32   `json:"promedio2,string"`
+	Average3     float32   `json:"promedio3,string"`
+	Average4     float32   `json:"promedio4,string"`
+	Average5     float32   `json:"promedio5,string"`
+	Average6     float32   `json:"promedio6,string"`
+	Substitute   float32   `json:"sustitutorio,string"`
+	Average      float32   `json:"promedio,string"`
+	Postponed    float32   `json:"aplazado,string"`
+	FinalAverage float32   `json:"pfinal,string"`
+	Disabled     bool      `json:"inh,string"`
+	Weights      []float32 `json:"pesos"`
+	Statuses     []int     `json:"estados"`
+	FinalStatus  int       `json:"estado_final,string"`
 }
 
 // GetSuvGradesResponse retrieves the current semester and its grades from SUV2.
@@ -128,87 +128,87 @@ func unmarshalSuvGradesResponse(data []byte) (*SuvGradesResponse, error) {
 
 		// Convert string ID to int
 		if idStr, ok := rawCourse["idcurso"].(string); ok {
-			course.IdCurso, _ = strconv.Atoi(idStr)
+			course.CourseID, _ = strconv.Atoi(idStr)
 		}
 
 		// Assign course name
 		if curso, ok := rawCourse["curso"].(string); ok {
-			course.Curso = curso
+			course.CourseName = curso
 		}
 
 		// Convert string Vez to int
 		if vezStr, ok := rawCourse["vez"].(string); ok {
-			course.Vez, _ = strconv.Atoi(vezStr)
+			course.Attempt, _ = strconv.Atoi(vezStr)
 		}
 
 		// Convert string averages to float32
 		if p1, ok := rawCourse["promedio1"].(string); ok && p1 != "" {
 			val, _ := strconv.ParseFloat(p1, 32)
-			course.Promedio1 = float32(val)
+			course.Average1 = float32(val)
 		}
 		if p2, ok := rawCourse["promedio2"].(string); ok && p2 != "" {
 			val, _ := strconv.ParseFloat(p2, 32)
-			course.Promedio2 = float32(val)
+			course.Average2 = float32(val)
 		}
 		if p3, ok := rawCourse["promedio3"].(string); ok && p3 != "" {
 			val, _ := strconv.ParseFloat(p3, 32)
-			course.Promedio3 = float32(val)
+			course.Average3 = float32(val)
 		}
 		if p4, ok := rawCourse["promedio4"].(string); ok && p4 != "" {
 			val, _ := strconv.ParseFloat(p4, 32)
-			course.Promedio4 = float32(val)
+			course.Average4 = float32(val)
 		}
 		if p5, ok := rawCourse["promedio5"].(string); ok && p5 != "" {
 			val, _ := strconv.ParseFloat(p5, 32)
-			course.Promedio5 = float32(val)
+			course.Average5 = float32(val)
 		}
 		if p6, ok := rawCourse["promedio6"].(string); ok && p6 != "" {
 			val, _ := strconv.ParseFloat(p6, 32)
-			course.Promedio6 = float32(val)
+			course.Average6 = float32(val)
 		}
 
 		// Convert other numeric fields
 		if sust, ok := rawCourse["sustitutorio"].(string); ok && sust != "" {
 			val, _ := strconv.ParseFloat(sust, 32)
-			course.Sustitutorio = float32(val)
+			course.Substitute = float32(val)
 		}
 		if prom, ok := rawCourse["promedio"].(string); ok && prom != "" {
 			val, _ := strconv.ParseFloat(prom, 32)
-			course.Promedio = float32(val)
+			course.Average = float32(val)
 		}
 		if apl, ok := rawCourse["aplazado"].(string); ok && apl != "" {
 			val, _ := strconv.ParseFloat(apl, 32)
-			course.Aplazado = float32(val)
+			course.Postponed = float32(val)
 		}
 		if pf, ok := rawCourse["pfinal"].(string); ok && pf != "" {
 			val, _ := strconv.ParseFloat(pf, 32)
-			course.PromedioFinal = float32(val)
+			course.FinalAverage = float32(val)
 		}
 		if inh, ok := rawCourse["inh"].(string); ok {
 			inhVal, _ := strconv.Atoi(inh)
-			course.Inhabilitado = inhVal == 1
+			course.Disabled = inhVal == 1
 		}
 
 		if ef, ok := rawCourse["estado_final"].(string); ok {
-			course.EstadoFinal, _ = strconv.Atoi(ef)
+			course.FinalStatus, _ = strconv.Atoi(ef)
 		}
 
 		// Convert string arrays to numeric arrays
 		if pesos, ok := rawCourse["pesos"].([]interface{}); ok {
-			course.Pesos = make([]float32, len(pesos))
+			course.Weights = make([]float32, len(pesos))
 			for j, peso := range pesos {
 				if pesoStr, ok := peso.(string); ok && pesoStr != "" {
 					val, _ := strconv.ParseFloat(pesoStr, 32)
-					course.Pesos[j] = float32(val)
+					course.Weights[j] = float32(val)
 				}
 			}
 		}
 
 		if estados, ok := rawCourse["estados"].([]interface{}); ok {
-			course.Estados = make([]int, len(estados))
+			course.Statuses = make([]int, len(estados))
 			for j, estado := range estados {
 				if estadoStr, ok := estado.(string); ok && estadoStr != "" {
-					course.Estados[j], _ = strconv.Atoi(estadoStr)
+					course.Statuses[j], _ = strconv.Atoi(estadoStr)
 				}
 			}
 		}
