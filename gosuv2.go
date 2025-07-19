@@ -112,7 +112,7 @@ func (c *SuvClient) postRequest(path string, body io.Reader) (*http.Request, err
 		return nil, err
 	}
 
-	req.Header.Set("User-Agent", "suvctl/0.1")
+	req.Header.Set("User-Agent", "gosuv2/0.1")
 
 	return req, nil
 }
@@ -123,7 +123,7 @@ func (c *SuvClient) getRequest(path string) (*http.Request, error) {
 		return nil, err
 	}
 
-	req.Header.Set("User-Agent", "suvctl/0.1")
+	req.Header.Set("User-Agent", "gosuv2/0.1")
 
 	return req, nil
 }
