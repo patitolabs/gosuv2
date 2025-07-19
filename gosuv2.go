@@ -2,7 +2,6 @@ package gosuv2
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -164,14 +163,10 @@ func (c *SuvClient) urlEncodedPostRequest(data url.Values, path string) (*http.R
 // Check if the response body contains an error message without consuming it
 func checkResponseBody(res *http.Response) error {
 	if res.StatusCode != http.StatusOK {
-		return fmt.Errorf("unexpected response status: %s", res.Status)
-	}
-	bodyCopy := new(bytes.Buffer)
-	bodyCopy.ReadFrom(res.Body)
-	res.Body = io.NopCloser(bodyCopy)
-	bodyString := bodyCopy.String()
-	if bytes.Contains([]byte(bodyString), []byte("C:\\wamp64\\www\\SistemaSUV2")) {
-		return errors.New("suv2 replied with an error, check your session id or try logging in again")
+		bodyCopy := new(bytes.Buffer)
+		bodyCopy.ReadFrom(res.Body)
+		res.Body = io.NopCloser(bodyCopy)
+		return fmt.Errorf("unexpected response status: %s, body: %s", res.Status, bodyCopy.String())
 	}
 	return nil
 }
